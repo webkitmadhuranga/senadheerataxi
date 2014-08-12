@@ -3,13 +3,11 @@
 <head>
 	<title>PhoneGap Ajax Sample</title>
 	<script type="text/javascript" src="jquery-2.1.1.min.js"></script>
-
 	<script type="text/javascript" src="phonegap.js"></script>
 	<script type="text/javascript">
-	 
-	/*function appReady(){
+	function appReady(){
 		var ajax = new XMLHttpRequest();
-		ajax.open("GET","http://search.twitter.com/search.json?q=bacon",true);
+		ajax.open("GET","http://mdu.loomhost.com/json.php",true);
 		ajax.send();
 		
 		ajax.onreadystatechange=function(){
@@ -17,7 +15,7 @@
 				eval('var data = ' + ajax.responseText + ';');
 				var theResults = data.results;
 				var theHTML = '';
-				for(var i=0;i<theResults.length;i++){
+				/*for(var i=0;i<theResults.length;i++){
 					theHTML += ['<div class="tweet"',
 					'<div class="avatar"> <img src='+theResults[i].profile_image_url+' /></div>',
 					'<div class="tweet_content">',
@@ -25,17 +23,10 @@
 					'<p>'+theResults[i].text+'</p>',
 					'</div>',
 					'</div>'].join('');
-				}
-				document.getElementById('main').innerHTML = theHTML;
+				}*/
+				document.getElementById('main').innerHTML = theResults;
 			}
 		}
-	}*/
-	function appReady(){
-		 jQuery.getJSON('http://mdu.loomhost.com/json.php', {param1: 'value1'}, function(json, textStatus) {
-		    alert(json);
-		    alert(textStatus);
-		 });
-		 
 	}
 	document.addEventListener("deviceready", appReady, false);
 	
