@@ -2,9 +2,15 @@
 <html>
 <head>
 	<title>PhoneGap Ajax Sample</title>
+	<script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+
 	<script type="text/javascript" src="phonegap.js"></script>
 	<script type="text/javascript">
-	function appReady(){
+	jQuery.getJSON('http://mdu.loomhost.com/json.php', {param1: 'value1'}, function(json, textStatus) {
+		   console.log(json);
+		   console.log(textStatus);
+		 });
+	/*function appReady(){
 		var ajax = new XMLHttpRequest();
 		ajax.open("GET","http://search.twitter.com/search.json?q=bacon",true);
 		ajax.send();
@@ -26,6 +32,13 @@
 				document.getElementById('main').innerHTML = theHTML;
 			}
 		}
+	}*/
+	function appReady(){
+		 jQuery.getJSON('http://mdu.loomhost.com/json.php', {param1: 'value1'}, function(json, textStatus) {
+		   console.log(json);
+		   console.log(textStatus);
+		 });
+		 
 	}
 	document.addEventListener("deviceready", appReady, false);
 	
