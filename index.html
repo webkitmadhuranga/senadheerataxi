@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/jquery.mobile-1.1.0.min.css">
+	<script src="js/jquery-1.7.1.min.js"></script>
+	<script src="js/jquery.mobile-1.1.0.min.js"></script>
+	<!-- <link rel="stylesheet" href="jquery.mobile-1.1.0.custom.css?" /> -->
+</head>
+<body>
+<!-- m_driver_login -->
+	<div id="m_driver_login" data-url="m_driver_login" data-role="page" data-theme="b">
+		<div data-role="header" data-theme="b" data-position="fixed">
+			<h1>Senadheera Taxi</h1>
+		</div> <!-- header -->
+
+		<div data-role="content">
+
+				<!-- m_driver_login_form -->
+			<form id="m_driver_login_form" class="m_driver_login_form" action="#" data-ajax="false" method="POST" class="ui-body-d" >
+
+				<div data-role="fieldcontain">
+					<label for="user_name">User Name</label>
+					<input type="text" name="user_name" id="user_name" value='madhuranga'/>
+				</div>
+
+				<div data-role="fieldcontain">
+					<label for="password">Password</label>
+					<input type="password" name="password" id="password"  value='hi' />
+				</div>
+
+				<input id="login_btn" class="login_btn" type="submit" data-icon="check" value="Login"/>
+			</form>
+			<a href="#m_driver_home" data-role="button" data-theme="a">Home</a>
+
+		</div><!-- content -->
+
+		<div data-role="footer" data-theme="b" data-position="fixed">
+			<h1>Senadheera Taxi @2014</h1>
+		</div> <!-- footer -->
+	</div>
+	<script>
+		function ajax_login (form_data) {
+	        // app.initialize();
+	        $.ajax({
+	            url: 'http://senadheerataxi.loomhost.com/site1/index.php/driver/user/ajax_driver_login/',
+	            type: 'POST',
+	            dataType: 'html',
+	            data: {user_name: $('#user_name').val(),password:$('#password').val()},
+	        })
+	        .done(function(response) {
+	        	alert(response)
+	            // alert(response.status);
+	            // alert(response.msg);
+	            console.log("success");
+	                // alert("success");
+	            })
+	        .fail(function() {
+	            console.log("error");
+	                // alert("error");
+	            })
+	        .always(function() {
+	            console.log("complete");
+	                 // alert("complete");
+	             });
+
+	    }
+
+		jQuery(document).ready(function($) {
+			$('#m_driver_login_form').submit(function(event) {
+				event.preventDefault(); 
+				ajax_login($(this).serializeArray());
+
+			});
+		});
+	</script>
+
+<!-- m_driver_home -->
+	<div id="m_driver_home" data-url="m_driver_home" data-role="page" data-theme="b">
+		<div data-role="header" data-theme="b" data-position="fixed">
+			<h1>HOME</h1>
+		</div> <!-- header -->
+
+		<div data-role="content" id='m_page_add_hire_content'>
+
+			<ul id="nearest_fuel_station" class="nearest_fuel_station" data-role="listview" data-inset="true" data-filter="true" data-theme="b">
+				<li data-role="list-divider"><a href="#m_page_add_hire"><h3>Add hire payment</h3><p>hello</p></a></li>
+				<li><a href="#m_payment_list"><h3>List last 10 hire payment</h3><p>Last 10 payments</p></a></li>
+				<li><a href="#find_nearest_town"><h3>Find nearest town</h3><p>Nearest Town</p></a></li>
+				<li><a href="#m_add_a_town">Add a town</a></li>
+				<li><a href="#m_where_am_i"><h3>Where am I</h3><p>Show current location</p></a></li>
+				<li>Nearest Fuel stations</li>
+			</ul>
+
+		</div><!-- content -->
+
+		<div data-role="footer" data-theme="b" data-position="fixed">
+			<h1>Senadheera Taxi @2014</h1>
+		</div> <!-- footer -->
+	</div>
+	<script>
+			function ajaxf_list_hire () {
+
+		        // app.initialize();
+		        $.ajax({
+		            url: 'http://senadheerataxi.loomhost.com/site1/index.php/driver/journey/ajax_get_journey_list/',
+		            type: 'POST',
+		            dataType: 'json',
+		            data: {data:'nodata' },
+		        })
+		        .done(function(response) {
+		        	alert(response)
+		        	if (response.journeys.length>0)
+		        	{
+		        		html = ' <table>'+
+									'<tr>'+
+										'<th>Time</th>'+
+										'<th>Start</th>'+
+										'<th>To</th>'+
+										'<th>Payment</th>'+
+									'</tr>'; 
+		        		for (var i = 0; i < response.journeys.length; i++) {
+		        			html = html +'<tr>'+
+											'<td>'+response.journeys[i]+'</td>'+
+										'</tr>';
+		        		};
+
+		        			$('#m_page_add_hire_content').html(html + '</table>');
+
+		        	}
+		        	else
+		        	{
+		        		$('#m_page_add_hire_content').html('<h1>No data </h1>');
+		        	}
+
+
+		            console.log("success");
+		                // alert("success");
+		            })
+		        .fail(function() {
+		            console.log("error");
+		                // alert("error");
+		            })
+		        .always(function() {
+		            console.log("complete");
+		                 // alert("complete");
+		             });
+
+		    }
+ 
+		$(document).on("pagebeforeshow","#m_payment_list",ajaxf_list_hire);
+	</script>
+
+
+
+<!-- m_page_add_hire -->
+	<div id="m_page_add_hire" data-url="m_page_add_hire" data-role="page">
+		<div data-role="header" data-theme="b">
+			<h1>Add hire</h1>
+			<div data-role="navbar">  
+				<ul>
+					<li><a href="#m_driver_home" data-icon="back">Home</a></li>
+				</ul>
+			</div>
+
+		</div><!-- header -->
+
+		<div data-role="content">
+
+				<!-- m_page_add_hire_form -->
+			<form id="m_page_add_hire_form" class="m_page_add_hire_form" action="admin/driver/town/add" method="POST" data-ajax='false'>
+
+				<div data-role="fieldcontain">
+					<label for="start_place">Start place</label>
+					<input type="text" name="start_place" id="start_place" />
+				</div>
+
+				<div data-role="fieldcontain">
+					<label for="end_place">End place</label>
+					<input type="text" name="end_place" id="end_place" />
+				</div>
+
+				<div data-role="fieldcontain">
+					<label for="start_town_id">Start town_id</label>
+					<input type="number" name="start_town_id" id="start_town_id" />
+				</div>
+
+				<div data-role="fieldcontain">
+					<label for="km">Travel distance</label>
+					<input type="number" name="km" id="km" />
+				</div>
+
+				<div data-role="fieldcontain">
+					<label for="pasenger_count">Pasenger count</label>
+					<input type="number" name="pasenger_count" id="pasenger_count" />
+				</div>
+
+				<div data-role="fieldcontain">
+					<label for="cash">Payment</label>
+					<input type="number" name="cash" id="cash" />
+				</div>
+
+
+				<div data-role="fieldcontain">
+					<label for="note">Note:</label>
+					<textarea name="note" id="note"></textarea>
+				</div>
+
+				<input id="add_hire_payment_btn" class="add_hire_payment_btn" type="submit" data-icon="check" value="Saves"/
+
+				<div data-role="fieldcontain">
+					<label for="sel_tw48">Start Nearest town</label>
+					<select name="start_nearest_town" id="sel_tw48" data-mini="true">
+						<option value="Kirulapone">Kirulapone</option><option value="Nugegoda">Nugegoda</option><option value="Delkada">Delkada</option><option value="Maharagama">Maharagama</option></select>
+					</div>
+				</form>
+
+			</div><!-- content -->
+
+			<div data-role="footer" data-theme="b">
+				<h1>Senadheera Taxi @2014</h1>
+			</div> <!-- footer -->
+		</div>
+		<script>
+			function ajaxf_add_hire (form_data) {
+		        // app.initialize();
+		        $.ajax({
+		            url: 'http://senadheerataxi.loomhost.com/site1/index.php/driver/journey/ajax_add/',
+		            type: 'POST',
+		            dataType: 'html',
+		            data: {start_place:$('#start_place').val(),end_place:$('#end_place').val(),start_town_id:$('#start_town_id').val(),end_town_id:$('#end_town_id').val(),km:$('#km').val(),pasenger_count:$('#pasenger_count').val(),cash:$('#cash').val(),note:$('#note').val()},
+		        })
+		        .done(function(response) {
+		        	alert(response)
+		            // alert(response.status);
+		            // alert(response.msg);
+		            console.log("success");
+		                // alert("success");
+		            })
+		        .fail(function() {
+		            console.log("error");
+		                // alert("error");
+		            })
+		        .always(function() {
+		            console.log("complete");
+		                 // alert("complete");
+		             });
+
+		    }
+
+
+			jQuery(document).ready(function($) {
+				$('#m_page_add_hire_form').submit(function(event) {
+					event.preventDefault(); 
+					ajaxf_add_hire($(this).serializeArray());
+
+				});
+			});
+		</script>
+<!-- m_payment_list -->
+		<div id="m_payment_list" data-url="m_payment_list" data-role="page">
+			<div data-role="header" data-theme="b">
+				<h1>Hire payment lat 10</h1>
+			</div> <!-- header -->
+
+			<div data-role="content">
+				
+				<ol data-role="listview" id="m_payment_list_ol" data-inset="true" data-filter="true" data-theme="b">
+					<li>No Data</li> 
+				</ol>
+
+			</div><!-- content -->
+
+			<div data-role="footer" data-theme="b" data-position="fixed">
+				<h1>Senadheera Taxi @2014</h1>
+			</div> <!-- footer -->
+		</div>
+
+
+<!-- m_find_nearest_town -->
+		<div id="m_find_nearest_town" data-url="m_find_nearest_town" data-role="page">
+			<div data-role="header">
+				<h1>Find nearest town</h1>
+			</div> <!-- header -->
+
+			<div data-role="content">
+
+			</div><!-- content -->
+
+			<div data-role="footer" data-position="fixed">
+				<h1>Senadheera Taxi @2014</h1>
+			</div> <!-- footer -->
+		</div>
+<!-- m_where_am_i -->
+		<div id="m_where_am_i" data-url="m_where_am_i" data-role="page">
+			<div data-role="header" data-theme="b">
+				<h1>Where am I</h1>
+			</div> <!-- header -->
+
+			<div data-role="content">
+
+
+			</div><!-- content -->
+
+			<div data-role="footer" data-position="fixed">
+				<h1>Senadheera Taxi @2014</h1>
+				<div data-role="na <!-- footervbar"> -->
+					<ul>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+
+
+<!-- m_add_a_town -->
+		<div id="m_add_a_town" data-url="m_add_a_town" data-role="page">
+			<div data-role="header" data-theme="b">
+				<h1>Add a town</h1>
+			</div> <!-- header -->
+
+			<div data-role="content">
+
+				<!-- m_add_a_town_form1 -->
+				<form id="m_add_a_town_form1" class="m_add_a_town_form1" action="driver/town/add" method="POST">
+
+					<div data-role="fieldcontain">
+						<label for="inp_tw72">Town Name</label>
+						<input type="text" name="town_name" id="inp_tw72" />
+					</div>
+				</form>
+
+			</div><!-- content -->
+
+			<div data-role="footer" data-theme="b" data-position="fixed">
+				<h1>Senadheera Taxi @2014</h1>
+			</div> <!-- footer -->
+		</div>
+
+</body>
+</html>
